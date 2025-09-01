@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reflexions sobre l'Amor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            overflow: hidden;
+        }
+
+        .container,
+        .love-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .love-screen {
+            background-color: #0d0d0d;
+            display: none;
+            position: relative;
+        }
+
+        blockquote {
+            font-size: 1.8rem;
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            min-height: 120px;
+        }
+
+        .author {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+        }
+
+        button {
+            margin-top: 30px;
+            background: none;
+            border: 1px solid #888;
+            color: #f1f1f1;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: float 6s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(1);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .back-btn {
+            position: absolute;
+            bottom: 80px;
+            /* <-- pujat de 20px a 80px */
+            right: 20px;
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+
+        audio {
+            margin-top: 20px;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Pantalla Principal -->
+    <div class="container" id="main">
+        <blockquote id="quote"></blockquote>
+        <div class="author" id="author"></div>
+        <button onclick="goToLove()">Prem aquí si estàs enamorat 💘</button>
+    </div>
+
+    <!-- Pantalla Amor -->
+    <div class="love-screen" id="loveScreen">
+        <div class="hearts" id="heartsContainer"></div>
+        <h1 style="z-index:2;">All you need is love 🎵</h1>
+        <audio controls autoplay loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3" />
+            El teu navegador no suporta àudio.
+        </audio>
+        <button class="back-btn" onclick="goBack()">Tornar a la pàgina principal</button>
+    </div>
+
+    <script>
+        const quotes = [
+            {
+                text: "Sense amor no som res.",
+                author: "Carl Gustav Jung"
+            }
+        ];
+
+        let index = 0;
+        const quoteEl = document.getElementById("quote");
+        const authorEl = document.getElementById("author");
+
+        function showQuote(i) {
+            quoteEl.classList.remove("fade-in");
+            setTimeout(() => {
+                quoteEl.textContent = `"${quotes[i].text}"`;
+                authorEl.textContent = `— ${quotes[i].author}`;
+                quoteEl.classList.add("fade-in");
+            }, 300);
+        }
+
+        function goToLove() {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("loveScreen").style.display = "flex";
+            generateHearts();
+        }
+
+        function goBack() {
+            document.getElementById("loveScreen").style.display = "none";
+            document.getElementById("main").style.display = "flex";
+        }
+
+        function generateHearts() {
+            const heartsContainer = document.getElementById("heartsContainer");
+            heartsContainer.innerHTML = '';
+            for (let i = 0; i < 40; i++) {
+                const heart = document.createElement("div");
+                heart.className = "heart";
+                heart.textContent = "❤";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDelay = Math.random() * 5 + "s";
+                heart.style.fontSize = 16 + Math.random() * 24 + "px";
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Inicia amb la primera frase
+        showQuote(index);
+    </script>
+</body>
+
+</html>
